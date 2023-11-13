@@ -1,0 +1,15 @@
+export const YEAR_COLORS = {
+    YEAR_1398: "#FFE8D1",
+    YEAR_1399: "#568EA3",
+    YEAR_1400: "#826251",
+    YEAR_1401: "#F56960",
+    YEAR_1402: "#9CF6F6",
+    YEAR_1403: "#F3B61F",
+    YEAR_1404: "#A29F15",
+    YEAR_1405: "#B8CDF8",
+    YEAR_1406: "#DBABBE",
+    YEAR_1407: "#9D8DF1",
+    YEAR_1408: "#D64933",
+    YEAR_1409: "#92DCE5",
+    YEAR_1410: "#BAA1A7",
+};
