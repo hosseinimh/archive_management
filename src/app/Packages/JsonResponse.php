@@ -33,10 +33,9 @@ class JsonResponse
             if (is_array($items) && count(array_keys($items)) > 0) {
                 return $this->okResponse(array_merge($items, ['count' => $count]));
             } else {
-                return $this->okResponse(['items' => $this->entityResource ? $this->entityResource::collection($items) : $items, 'count' => $count]);
+                return $this->okResponse(['items' => $this->entityResource ? $this->entityResource::collection($items) : $items, 'count' => count($items) > 0 ? $items[0]->items_count : 0]);
             }
         }
-
         return $this->errorResponse();
     }
 

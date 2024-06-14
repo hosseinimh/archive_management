@@ -19,6 +19,8 @@ abstract class Year
     const YEAR_1408 = 1408;
     const YEAR_1409 = 1409;
     const YEAR_1410 = 1410;
+    const MIN_YEAR = 1398;
+    const MAX_YEAR = 1410;
 
     public static function toArray()
     {

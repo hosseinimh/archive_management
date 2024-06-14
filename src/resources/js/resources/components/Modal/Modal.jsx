@@ -64,7 +64,7 @@ const Modal = ({
                 className="modal"
                 style={{
                     maxWidth: fullWidth ? "90%" : "35rem",
-                    height: fullWidth ? "90vh" : "70vh",
+                    height: fullWidth ? "90vh" : "60vh",
                 }}
             >
                 <div className="modal-hd">

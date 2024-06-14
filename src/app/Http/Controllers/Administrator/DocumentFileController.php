@@ -26,7 +26,7 @@ class DocumentFileController extends Controller
     {
         $result = $this->service->store($request->description, $document->id, auth()->user()->id);
         if ($result) {
-            $uploadResult = (new FileUploaderController(StoragePath::DOCUMENT_FILE))->uploadFile($result, $request, 'file', 'path', 10 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/tiff', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
+            $uploadResult = (new FileUploaderController(StoragePath::DOCUMENT_FILE))->uploadFile($result, $request, 'file', 'path', 100 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/tiff', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
             if ($uploadResult !== UploadedFile::OK) {
                 $this->service->delete($result);
             }
@@ -39,7 +39,7 @@ class DocumentFileController extends Controller
         $result = $this->service->store(null, $document->id, auth()->user()->id);
         if ($result) {
             $name = __('document_file.document_file') . $this->service->count($document->id) . '.pdf';
-            $uploadResult = (new FileUploaderController(StoragePath::DOCUMENT_FILE))->uploadScanFile($result, $request, 'RemoteFile', 'path', $name, 10 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/tiff', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
+            $uploadResult = (new FileUploaderController(StoragePath::DOCUMENT_FILE))->uploadScanFile($result, $request, 'RemoteFile', 'path', $name, 100 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/tiff', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
             if ($uploadResult !== UploadedFile::OK) {
                 $this->service->delete($result);
             }

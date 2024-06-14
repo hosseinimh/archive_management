@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Error;
 
+use App\Facades\Helper;
 use DateTime;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -13,6 +14,7 @@ class ErrorResource extends JsonResource
             'id' => intval($this->id),
             'message' => $this->message ?? '',
             'createdAt' => (new DateTime($this->created_at))->format('Y-m-d H:i:s'),
+            'createdAtFa' => Helper::faDate($this->created_at),
         ];
     }
 }

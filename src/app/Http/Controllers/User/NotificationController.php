@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use App\Constants\ErrorCode;
-use App\Constants\NotificationCategory;
 use App\Constants\NotificationType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Notification\IndexNotificationsRequest;
@@ -22,9 +21,9 @@ class NotificationController extends Controller
 
     public function index(IndexNotificationsRequest $request): HttpJsonResponse
     {
-        $category = in_array($request->category, NotificationCategory::toArray()) ? $request->category : 0;
+        $category = 0;
         $records = $this->service->getPaginate(auth()->user()->id, $category, $request->_pn, $request->_pi);
-        $response = $this->onItems($records, $this->service->count(auth()->user()->id, $category));
+        $response = $this->onItems($records);
         $this->service->seenPaginate($records);
         return $response;
     }

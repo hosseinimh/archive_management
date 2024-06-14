@@ -8,59 +8,12 @@ import {
     general,
 } from "../../../../constants/strings/fa";
 import notification from "../../../../utils/Notification";
-import { NOTIFICATION_CATEGORIES } from "../../../../constants";
 import utils from "../../../../utils/Utils";
 
 const Notifications = () => {
-    const layoutState = useSelector((state) => state.layoutReducer);
     const pageState = useSelector((state) => state.pageReducer);
     const columnsCount = 3;
     const pageUtils = new PageUtils();
-
-    const onChangeTabContent = (e) => {
-        e.stopPropagation();
-        [
-            ...document.querySelectorAll(
-                ".checked-item.tab-item.tab-page-item"
-            ),
-        ].map((btn) => {
-            if (e.target === btn) {
-                btn.classList.add("active");
-            } else {
-                btn.classList.remove("active");
-            }
-        });
-        pageUtils.onChangeCategory(e.target.getAttribute("data-tab-content"));
-    };
-
-    const renderSubCategories = () => (
-        <div className="checked-list scrollhide d-flex mx-15">
-            <button
-                className="checked-item tab-item tab-page-item active"
-                data-tab-content="0"
-                onClick={(e) => onChangeTabContent(e)}
-                disabled={layoutState?.loading}
-            >
-                {strings.allNotificaions}
-            </button>
-            <button
-                className="checked-item tab-item tab-page-item"
-                data-tab-content={NOTIFICATION_CATEGORIES.ACCOUNT}
-                onClick={(e) => onChangeTabContent(e)}
-                disabled={layoutState?.loading}
-            >
-                {strings.accountNotifications}
-            </button>
-            <button
-                className="checked-item tab-item tab-page-item"
-                data-tab-content={NOTIFICATION_CATEGORIES.SYSTEM}
-                onClick={(e) => onChangeTabContent(e)}
-                disabled={layoutState?.loading}
-            >
-                {strings.systemNotificaions}
-            </button>
-        </div>
-    );
 
     const renderHeader = () => (
         <tr>
@@ -109,7 +62,6 @@ const Notifications = () => {
             pageUtils={pageUtils}
             table={{ renderHeader, renderItems, renderFooter }}
             hasAdd={false}
-            renderTopList={renderSubCategories}
         ></ListPage>
     );
 };

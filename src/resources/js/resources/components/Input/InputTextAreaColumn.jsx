@@ -10,6 +10,7 @@ const InputTextAreaColumn = ({
     fullRow = true,
     readOnly = false,
     value = null,
+    containerStyle = null,
     inputStyle = null,
 }) => {
     const layoutState = useSelector((state) => state.layoutReducer);
@@ -50,6 +51,9 @@ const InputTextAreaColumn = ({
         if (form && value) {
             form?.setValue(field, value);
         }
+        if (!form && value) {
+            document.querySelector(`#${field}`).value = value;
+        }
     }, [form]);
 
     const renderItem = () => (
@@ -63,6 +67,7 @@ const InputTextAreaColumn = ({
                 }`}
                 style={{
                     minHeight: "100px",
+                    ...containerStyle,
                 }}
             >
                 <textarea

@@ -10,6 +10,7 @@ export const general = {
     view: "نمایش",
     search: "جستجو",
     cancel: "لغو",
+    close: "بستن",
     back: "بازگشت",
     first: "اولین",
     previous: "قبلی",
@@ -139,6 +140,8 @@ export const errorsPage = {
     _subTitle: "فهرست خطاهای رخ‌داده در سامانه",
     message: "متن خطا",
     date: "تاریخ",
+    excel: "خروجی اکسل",
+    remove: "حذف خطاها",
 };
 
 export const usersPage = {
@@ -234,6 +237,11 @@ export const profileModal = {
     mobileModal: "موبایل",
 };
 
+export const errorModal = {
+    _title: "نمایش خطای رخ‌داده",
+    messageErrorModal: "متن خطا",
+};
+
 export const genderTypes = {
     male: "مرد",
     female: "زن",
@@ -264,9 +272,6 @@ export const selectYearModal = {
 export const notificationsPage = {
     _title: "اعلان‌ها",
     _subTitle: "فهرست اعلان‌ها",
-    allNotificaions: "همه اعلان‌ها",
-    accountNotifications: "اعلان‌های حساب",
-    systemNotificaions: "اعلان‌های سیستمی",
     title: "عنوان",
     body: "متن",
     date: "تاریخ",
@@ -276,14 +281,20 @@ export const documentsPage = {
     _title: "بایگانی",
     _subTitle: "فهرست اسناد بایگانی شده",
     documentNo: "شماره سند",
+    documentNoPlaceholder: "شماره سند",
     documentDate: "تاریخ سند",
+    documentDatePlaceholder: "تاریخ سند",
     paymentNo: "شناسه پرداخت سند",
+    paymentNoPlaceholder: "شناسه پرداخت سند",
     paymentDate: "تاریخ پرداخت سند",
+    paymentDatePlaceholder: "تاریخ پرداخت سند",
     owner: "صاحب سند",
+    ownerPlaceholder: "صاحب سند",
     user: "کاربر",
     createdAt: "تاریخ صدور سند",
     showDocumentFilesModal: "مدارک پیوست",
     add: "ثبت سند",
+    excel: "خروجی اکسل",
 };
 
 export const addDocumentPage = {
@@ -326,8 +337,8 @@ export const documentFilesModal = {
     _title: "مدارک پیوست",
     _subTitle: "فهرست مدارک پیوست",
     nameDocumentFilesModal: "پیوست",
-    fileDocumentFilesModal: "پیوست (حداکثر 10 مگابایت)",
-    fileDocumentFilesModalPlaceholder: "پیوست (حداکثر 10 مگابایت)",
+    fileDocumentFilesModal: "پیوست (حداکثر 100 مگابایت)",
+    fileDocumentFilesModalPlaceholder: "پیوست (حداکثر 100 مگابایت)",
     descriptionDocumentFilesModal: "توضیحات",
     descriptionDocumentFilesModalPlaceholder: "توضیحات",
     createdAtFaDocumentFilesModal: "تاریخ",

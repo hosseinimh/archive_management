@@ -77,8 +77,21 @@ const InputTextDocumentNoColumn = ({
             style = { ...inputStyle };
         }
         if (prefix !== "") {
-            style = { ...style, paddingLeft: "4rem" };
+            style = { ...style, paddingLeft: icon ? "2.75rem" : "3.25rem" };
         }
+        const span = (
+            <span className={`input-prefix ${icon ? "mx-rdir-30" : ""}`}>
+                {prefix}
+            </span>
+        );
+        const spanOutput =
+            prefix === "" ? (
+                ""
+            ) : onPrefixClick ? (
+                <CustomLink onClick={onPrefixClick}>{span}</CustomLink>
+            ) : (
+                span
+            );
         return (
             <>
                 <input
@@ -91,15 +104,19 @@ const InputTextDocumentNoColumn = ({
                     style={{ ...style }}
                     autoComplete="false"
                     readOnly={readOnly}
+                    onChange={(e) => {
+                        if (
+                            isNaN(e.target.value) ||
+                            e.target.value.indexOf(".") > -1 ||
+                            e.target.value.length > 5
+                        ) {
+                            e.preventDefault();
+                        } else {
+                            form?.setValue(field.name, e.target.value);
+                        }
+                    }}
                 />
-                {prefix !== "" && (
-                    <span className="input-prefix">{prefix}</span>
-                )}
-                {prefix !== "" && onPrefixClick && (
-                    <CustomLink onClick={onPrefixClick}>
-                        <span className="input-prefix">{prefix}</span>
-                    </CustomLink>
-                )}
+                {spanOutput}
                 {messageState?.messageField === field.name && (
                     <span className="error">{messageState?.message}</span>
                 )}
@@ -126,6 +143,17 @@ const InputTextDocumentNoColumn = ({
                     className={inputClassName}
                     style={{ ...style }}
                     autoComplete="false"
+                    onChange={(e) => {
+                        if (
+                            isNaN(e.target.value) ||
+                            e.target.value.indexOf(".") > -1 ||
+                            e.target.value.length > 5
+                        ) {
+                            e.preventDefault();
+                        } else {
+                            document.querySelector(`#${field}`).value = value;
+                        }
+                    }}
                 />
             </>
         );

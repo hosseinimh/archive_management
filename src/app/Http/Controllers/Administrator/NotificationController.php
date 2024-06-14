@@ -22,6 +22,6 @@ class NotificationController extends Controller
     {
         $type = in_array($request->type, NotificationType::toArray()) ? $request->type : 0;
         $category = in_array($request->category, NotificationCategory::toArray()) ? $request->category : 0;
-        return $this->onItems($this->service->getPaginate($user->id, $type, $category, $request->_pn, $request->_pi), $this->service->count($user->id, $type, $category));
+        return $this->onItems($this->service->getPaginate($user->id, $type, $category, $request->_pn, $request->_pi));
     }
 }

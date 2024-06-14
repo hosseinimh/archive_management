@@ -16,7 +16,7 @@ class Controller extends BaseController
 
     public function __construct(protected JsonResponse $response)
     {
-        date_default_timezone_set('Asia/Tehran');
+        date_default_timezone_set('UTC');
     }
 
     public function onItem(mixed $item): HttpJsonResponse
@@ -24,20 +24,17 @@ class Controller extends BaseController
         return $this->response->itemResponse($item);
     }
 
-    public function onItems(mixed $items, int $count = 0)
+    public function onItems(mixed $items)
     {
-        if ($count <= 0) {
-            if (is_array($items)) {
-                if (array_key_exists('items', $items) && is_object($items['items'])) {
-                    $count = count($items['items']);
-                } else {
-                    $count = count($items);
-                }
+        if (is_array($items)) {
+            if (array_key_exists('items', $items) && is_object($items['items'])) {
+                $count = count($items['items']);
             } else {
-                $count = 0;
+                $count = count($items);
             }
+        } else {
+            $count = 0;
         }
-
         return $this->response->itemsResponse($items, $count);
     }
 

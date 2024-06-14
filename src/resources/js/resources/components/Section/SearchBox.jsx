@@ -10,6 +10,7 @@ const SearchBox = ({
     onSubmit,
     onReset,
     containerClassName,
+    showTitle = true,
 }) => {
     const layoutState = useSelector((state) => state.layoutReducer);
     const dispatch = useDispatch();
@@ -25,7 +26,9 @@ const SearchBox = ({
                 containerClassName ? `${containerClassName}` : `block pd-20`
             }
         >
-            <div className="field-title">{strings.search}</div>
+            {showTitle && (
+                <div className="field-title m-td-20">{strings.search}</div>
+            )}
             <div>{children}</div>
             <div className="btns d-flex mt-10">
                 <button

@@ -38,6 +38,12 @@ const InputFileColumn = ({
         }
     }, [pageState]);
 
+    useEffect(() => {
+        if (form && file === null) {
+            form.setValue(field, file);
+        }
+    }, [file]);
+
     const renderItem = () => (
         <div className="d-flex align-center">
             <label

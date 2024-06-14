@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Notification as Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class NotificationService
 {
@@ -13,7 +14,7 @@ class NotificationService
         if ($category !== 0) {
             $query->where('category', $category);
         }
-        return $query->orderBy('created_at', 'DESC')->orderBy('id', 'DESC')->skip(($page - 1) * $pageItems)->take($pageItems)->get();
+        return $query->select('tbl_notifications.*', DB::raw('COUNT(*) OVER() AS items_count'))->orderBy('created_at', 'DESC')->orderBy('id', 'DESC')->skip(($page - 1) * $pageItems)->take($pageItems)->get();
     }
 
     public function getReview(int $userId, int $type): mixed
@@ -62,14 +63,5 @@ class NotificationService
                 $record->update($data);
             }
         }
-    }
-
-    public function count(int $userId, int $category): int
-    {
-        $query = Model::query()->where('user_id', $userId);
-        if ($category !== 0) {
-            $query = $query->where('category', $category);
-        }
-        return $query->count();
     }
 }

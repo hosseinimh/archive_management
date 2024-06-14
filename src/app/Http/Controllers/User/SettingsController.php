@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Facades\Helper;
 use App\Http\Controllers\Controller;
 use App\Packages\JsonResponse;
 use App\Services\SettingsService;

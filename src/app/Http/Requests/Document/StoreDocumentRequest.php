@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Document;
 
+use App\Constants\DocumentNo;
 use App\Constants\ErrorCode;
+use App\Constants\Year;
+use Closure;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
@@ -20,7 +23,19 @@ class StoreDocumentRequest extends FormRequest
     public function rules()
     {
         return [
-            'document_no' => 'required|unique:tbl_documents',
+            'document_no' => ['required', 'unique:tbl_documents', function (string $attribute, mixed $value, Closure $fail) {
+                $items = explode('/', $value);
+                if (count($items) !== 2) {
+                    $fail(__('document.document_no_valid'));
+                    return;
+                }
+                $year = intval($items[0]);
+                $documentNo = intval($items[1]);
+                if ($year < Year::MIN_YEAR || $year > Year::MAX_YEAR || $documentNo < DocumentNo::MIN_DOCUMENT_NO || $documentNo > DocumentNo::MAX_DOCUMENT_NO) {
+                    $fail(__('document.document_no_valid'));
+                    return;
+                }
+            },],
             'document_date' => 'sometimes|numeric|gte:14000101',
             'payment_no' => 'max:50',
             'payment_date' => 'sometimes|numeric|gte:14000101',

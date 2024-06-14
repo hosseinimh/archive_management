@@ -17,6 +17,6 @@ class ErrorController extends Controller
 
     public function index(Request $request): HttpJsonResponse
     {
-        return $this->onItems($this->service->getPaginate($request->_pn, $request->_pi), $this->service->count());
+        return $this->onItems($this->service->getPaginate($request->_pn, $request->_pi));
     }
 }

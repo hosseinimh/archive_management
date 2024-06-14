@@ -21,7 +21,7 @@ class DocumentFileController extends Controller
 
     public function index(Document $document, IndexDocumentFilesRequest $request): HttpJsonResponse
     {
-        return $this->onItems($this->service->getAll($document->id), $this->service->count($document->id));
+        return $this->onItems($this->service->getAll($document->id));
     }
 
     public function show(Model $model): HttpJsonResponse

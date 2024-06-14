@@ -4,7 +4,7 @@ import { dateValidator, stringValidator } from "../CommonValidators";
 import { addDocumentPage as strings } from "../../../constants/strings/fa";
 
 const addDocumentSchema = yup.object().shape({
-    documentNo: stringValidator(yup.string(), strings.documentNo, 1, null),
+    documentNo: stringValidator(yup.string(), strings.documentNo, 1, 99999),
     documentDate: dateValidator(yup.string(), strings.documentDate, false),
     paymentNo: stringValidator(
         yup.string(),

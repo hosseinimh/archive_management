@@ -35,6 +35,7 @@ import TopLoadingBar from "./Loading/TopLoadingBar";
 
 // Modal
 import Modal from "./Modal/Modal";
+import ErrorModal from "./Modal/ErrorModal";
 import ProfileModal from "./Modal/ProfileModal";
 import PromptModal from "./Modal/PromptModal";
 import DocumentFilesModal from "./Modal/DocumentFilesModal";
@@ -88,6 +89,7 @@ export {
     CustomLink,
     TopLoadingBar,
     Modal,
+    ErrorModal,
     ProfileModal,
     PromptModal,
     DocumentFilesModal,

@@ -17,13 +17,19 @@ class DocumentService
         return Model::join('tbl_users', 'tbl_documents.user_id', 'tbl_users.id')->where('tbl_documents.document_no', 'LIKE', $year . '/%')->select('tbl_documents.*', 'tbl_users.name AS user_name', 'tbl_users.family AS user_family')->orderBy('tbl_documents.document_no', 'DESC')->first();
     }
 
-    public function getPaginate(int $page, int $pageItems): mixed
+    public function getPaginate(string $documentNo, ?string $documentDate, ?string $paymentNo, ?string $paymentDate, ?string $owner, int $page, int $pageItems): mixed
     {
-        return Model::join('tbl_users', 'tbl_documents.user_id', 'tbl_users.id')->select('tbl_documents.*', 'tbl_users.name AS user_name', 'tbl_users.family AS user_family')->orderBy('tbl_documents.created_at', 'DESC')->orderBy('tbl_documents.id', 'DESC')->skip(($page - 1) * $pageItems)->take($pageItems)->get();
+        return $this->handleGetList($documentNo, $documentDate, $paymentNo, $paymentDate, $owner)->skip(($page - 1) * $pageItems)->take($pageItems)->get();
+    }
+
+    public function getAllQuery(string $documentNo, ?string $documentDate, ?string $paymentNo, ?string $paymentDate, ?string $owner): mixed
+    {
+        return $this->handleGetList($documentNo, $documentDate, $paymentNo, $paymentDate, $owner);
     }
 
     public function store(string $documentNo, ?string $documentDate, ?string $paymentNo, ?string $paymentDate, ?string $owner, ?string $description, int $userId): mixed
     {
+        $documentDate = strlen($documentDate) === 8 ? substr($documentDate, 0, 4) . "/" . substr($documentDate, 4, 2) . "/" . substr($documentDate, 6) : null;
         $paymentDate = strlen($paymentDate) === 8 ? substr($paymentDate, 0, 4) . "/" . substr($paymentDate, 4, 2) . "/" . substr($paymentDate, 6) : null;
         $data = [
             'document_no' => $documentNo,
@@ -62,5 +68,26 @@ class DocumentService
     public function getSummary()
     {
         return Model::join('tbl_users', 'tbl_documents.user_id', 'tbl_users.id')->select(DB::raw('COUNT(*) AS count'), DB::raw('SUBSTRING(`document_no`,1,4) AS year'))->groupBy('year')->orderBy('year', 'ASC')->get();
+    }
+
+    private function handleGetList(string $documentNo, ?string $documentDate, ?string $paymentNo, ?string $paymentDate, ?string $owner): mixed
+    {
+        $documentDate = strlen($documentDate) === 8 ? substr($documentDate, 0, 4) . "/" . substr($documentDate, 4, 2) . "/" . substr($documentDate, 6) : null;
+        $paymentDate = strlen($paymentDate) === 8 ? substr($paymentDate, 0, 4) . "/" . substr($paymentDate, 4, 2) . "/" . substr($paymentDate, 6) : null;
+        $query = Model::join('tbl_users', 'tbl_documents.user_id', 'tbl_users.id')
+            ->where('document_no', 'LIKE', $documentNo . '%');
+        if ($documentDate !== null) {
+            $query->where('document_date', 'LIKE', '%' . $documentDate . '%');
+        }
+        if ($paymentNo !== null) {
+            $query->where('payment_no', 'LIKE', '%' . $paymentNo . '%');
+        }
+        if ($paymentDate !== null) {
+            $query->where('payment_date', 'LIKE', '%' . $paymentDate . '%');
+        }
+        if ($owner !== null) {
+            $query->where('owner', 'LIKE', '%' . $owner . '%');
+        }
+        return $query->select('tbl_documents.*', 'tbl_users.name AS user_name', 'tbl_users.family AS user_family', DB::raw('COUNT(*) OVER() AS items_count'))->orderBy('tbl_documents.created_at', 'DESC')->orderBy('tbl_documents.id', 'DESC');
     }
 }

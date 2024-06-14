@@ -16,7 +16,8 @@ class UserService
 
     public function getPaginate(string|null $username, string|null $name, string|null $family, int $page, int $pageItems): mixed
     {
-        return Model::where('username', 'LIKE', '%' . $username . '%')->where('name', 'LIKE', '%' . $name . '%')->where('family', 'LIKE', '%' . $family . '%')->orderBy('family', 'ASC')->orderBy('name', 'ASC')->orderBy('id', 'ASC')->skip(($page - 1) * $pageItems)->take($pageItems)->get();
+        return Model::where('username', 'LIKE', '%' . $username . '%')->where('name', 'LIKE', '%' . $name . '%')->where('family', 'LIKE', '%' . $family . '%')
+            ->select('tbl_users.*', DB::raw('COUNT(*) OVER() AS items_count'))->orderBy('family', 'ASC')->orderBy('name', 'ASC')->orderBy('id', 'ASC')->skip(($page - 1) * $pageItems)->take($pageItems)->get();
     }
 
     public function store(string $username, string $password, string $name, string $family, string $mobile, int $role, int $isActive): mixed
@@ -57,15 +58,5 @@ class UserService
         $password = Hash::make($password);
 
         return DB::statement("UPDATE `tbl_users` SET `password`='$password' WHERE `id`=$user->id");
-    }
-
-    public function count(string|null $username, string|null $name, string|null $family): int
-    {
-        return Model::where('username', 'LIKE', '%' . $username . '%')->where('name', 'LIKE', '%' . $name . '%')->where('family', 'LIKE', '%' . $family . '%')->count();
-    }
-
-    public function countAll(): int
-    {
-        return Model::count();
     }
 }

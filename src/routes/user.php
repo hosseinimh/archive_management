@@ -27,6 +27,8 @@ Route::middleware(['auth:sanctum', 'auth.user'])->group(function () {
 Route::middleware(['auth:sanctum', 'auth.logged'])->group(function () {
     Route::post('dashboard', [DashboardController::class, 'index']);
 
+    Route::post('errors/delete', [ErrorController::class, 'delete']);
+
     Route::post('settings/show', [SettingsController::class, 'show']);
 
     Route::post('notifications', [NotificationController::class, 'index']);

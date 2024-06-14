@@ -6,8 +6,14 @@ import { easeOutQuint } from "es6-easings";
 import {
     CustomLink,
     DocumentFilesModal,
+    InputDatePickerColumn,
+    InputRow,
+    InputTextColumn,
+    InputTextDocumentNoColumn,
     ListPage,
     ScanDocumentFile,
+    SearchBox,
+    SelectYearModal,
     TableFooter,
     TableItems,
 } from "../../../components";
@@ -44,6 +50,63 @@ const Documents = () => {
             easing: easeOutQuint,
         });
     };
+
+    const renderSearch = () => (
+        <SearchBox
+            showTitle={false}
+            pageUtils={pageUtils}
+            onSubmit={pageUtils.onSubmit}
+            onReset={pageUtils.onReset}
+        >
+            <InputRow>
+                <InputTextDocumentNoColumn
+                    field="documentNo"
+                    inputStyle={{ textAlign: "left", direction: "ltr" }}
+                    fullRow={false}
+                    showLabel
+                    icon={"icon-key4"}
+                    prefix={`${pageUtils?.pageState?.props?.year ?? ""}/`}
+                    onPrefixClick={(e) => pageUtils.onSelectYearModal(e)}
+                />
+                <InputDatePickerColumn
+                    field="documentDate"
+                    showLabel
+                    fullRow={false}
+                />
+                <InputTextColumn
+                    field="paymentNo"
+                    inputStyle={{ textAlign: "left", direction: "ltr" }}
+                    fullRow={false}
+                    showLabel
+                    icon={"icon-note-214"}
+                />
+                <InputDatePickerColumn
+                    field="paymentDate"
+                    showLabel
+                    fullRow={false}
+                />
+                <InputTextColumn
+                    field="owner"
+                    showLabel
+                    icon={"icon-personalcard4"}
+                    fullRow={false}
+                />
+            </InputRow>
+            <div className="block-border"></div>
+        </SearchBox>
+    );
+
+    const renderButtons = () => (
+        <button
+            className="btn btn-primary"
+            type="button"
+            title={strings.excel}
+            onClick={pageUtils?.onExcel}
+            disabled={layoutState?.loading}
+        >
+            {strings.excel}
+        </button>
+    );
 
     const renderHeader = () => (
         <tr>
@@ -140,9 +203,12 @@ const Documents = () => {
     return (
         <ListPage
             pageUtils={pageUtils}
+            renderTopList={renderSearch}
             table={{ renderHeader, renderItems, renderFooter }}
             hasAdd={userState?.user?.role === USER_ROLES.ADMINISTRATOR}
+            renderButtons={renderButtons}
         >
+            <SelectYearModal />
             <DocumentFilesModal />
             <ScanDocumentFile />
         </ListPage>

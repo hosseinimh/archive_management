@@ -39,6 +39,7 @@ function DocumentFilesModal() {
     const [modalShown, setModalShown] = useState(false);
     const [modalResult, setModalResult] = useState(undefined);
     const [message, setMessage] = useState(null);
+    const [documentFile, setDocumentFile] = useState(null);
     const [items, setItems] = useState(null);
     const [isAdd, setIsAdd] = useState(true);
     const [file, setFile] = useState(null);
@@ -145,6 +146,7 @@ function DocumentFilesModal() {
         editForm.reset();
         setFile(null);
         setIsAdd(false);
+        setDocumentFile(item);
         editForm.setValue(
             "descriptionDocumentFilesModal",
             item.description ?? ""
@@ -154,6 +156,7 @@ function DocumentFilesModal() {
     const onEditCanclled = () => {
         editForm.reset();
         setIsAdd(true);
+        setDocumentFile(null);
     };
 
     const onRemove = async (e, item) => {
@@ -222,6 +225,7 @@ function DocumentFilesModal() {
         editForm.reset();
         setIsAdd(true);
         setFile(null);
+        setDocumentFile(null);
     };
 
     const onSubmit = async (data) => {
@@ -234,7 +238,7 @@ function DocumentFilesModal() {
                   data.descriptionDocumentFilesModal
               )
             : await entity.update(
-                  layoutState?.shownModal?.props?.document?.id,
+                  documentFile?.id,
                   data.descriptionDocumentFilesModal
               );
         resetForm();
@@ -350,9 +354,9 @@ function DocumentFilesModal() {
             id="documentFilesModal"
             title={`${strings._title} - [ ${
                 layoutState?.shownModal?.props?.document?.documentNo
-            } ${
+            } - ${
                 layoutState?.shownModal?.props?.document?.owner
-                    ? `${layoutState?.shownModal?.props?.document?.owner} - `
+                    ? layoutState?.shownModal?.props?.document?.owner
                     : ""
             } ]`}
             onClose={onClose}
@@ -389,6 +393,7 @@ function DocumentFilesModal() {
                                 field="descriptionDocumentFilesModal"
                                 strings={strings}
                                 useForm={addForm}
+                                icon={"icon-note-14"}
                             />
                             <div className="btns d-flex mt-10">
                                 <button
@@ -428,6 +433,7 @@ function DocumentFilesModal() {
                                 field="descriptionDocumentFilesModal"
                                 strings={strings}
                                 useForm={editForm}
+                                icon={"icon-note-14"}
                             />
                             <div className="btns d-flex mt-10">
                                 <button

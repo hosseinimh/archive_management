@@ -1,17 +1,38 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Modal from "../Modal";
 import InputTextColumn from "../../Input/InputTextColumn";
-import { profileModal as strings } from "../../../../constants/strings/fa";
+import {
+    general,
+    profileModal as strings,
+} from "../../../../constants/strings/fa";
+import { setShownModalAction } from "../../../../state/layout/layoutActions";
 
 function ProfileModal() {
     const userState = useSelector((state) => state.userReducer);
+    const dispatch = useDispatch();
+
+    const renderFooter = () => {
+        return (
+            <div className="btns d-flex mtd-10">
+                <button
+                    className="btn btn-border"
+                    type="button"
+                    title={general.close}
+                    onClick={() => dispatch(setShownModalAction(null))}
+                >
+                    {general.close}
+                </button>
+            </div>
+        );
+    };
 
     return (
         <Modal
             id="profileModal"
             title={`${userState?.user?.name} ${userState?.user?.family} - [ ${userState?.user?.username} ]`}
+            footer={renderFooter()}
         >
             <InputTextColumn
                 field="nameModal"

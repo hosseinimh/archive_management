@@ -6,8 +6,21 @@ export class Document extends Entity {
         super();
     }
 
-    async getPaginate(_pn = 1, _pi = PAGE_ITEMS) {
+    async getPaginate(
+        documentNo,
+        documentDate,
+        paymentNo,
+        paymentDate,
+        owner,
+        _pn = 1,
+        _pi = PAGE_ITEMS
+    ) {
         return await this.handlePost(`${BASE_URL}/u/documents`, {
+            document_no: documentNo,
+            document_date: documentDate,
+            payment_no: paymentNo,
+            payment_date: paymentDate,
+            owner,
             _pn,
             _pi,
         });

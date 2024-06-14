@@ -178,9 +178,9 @@ function ScanDocumentFile() {
             id="scanDocumentFileModal"
             title={`${strings._title} - [ ${
                 layoutState?.shownModal?.props?.document?.documentNo
-            } ${
+            } - ${
                 layoutState?.shownModal?.props?.document?.owner
-                    ? `${layoutState?.shownModal?.props?.document?.owner} - `
+                    ? layoutState?.shownModal?.props?.document?.owner
                     : ""
             } ]`}
             onClose={onClose}

@@ -2,21 +2,25 @@ import { BASE_URL, PAGE_ITEMS } from "../../constants";
 import Entity from "./Entity";
 
 export class Error extends Entity {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 
-  async getPaginate(_pn = 1, _pi = PAGE_ITEMS) {
-    return await this.handlePost(`${BASE_URL}/a/errors`, {
-      _pn,
-      _pi,
-    });
-  }
+    async getPaginate(_pn = 1, _pi = PAGE_ITEMS) {
+        return await this.handlePost(`${BASE_URL}/a/errors`, {
+            _pn,
+            _pi,
+        });
+    }
 
-  async store(error, errorInfo) {
-    return await this.handlePost(`${BASE_URL}/u/errors/store`, {
-      error,
-      error_info: errorInfo,
-    });
-  }
+    async store(error, errorInfo) {
+        return await this.handlePost(`${BASE_URL}/u/errors/store`, {
+            error,
+            error_info: errorInfo,
+        });
+    }
+
+    async delete() {
+        return await this.handlePost(`${BASE_URL}/u/errors/delete`);
+    }
 }

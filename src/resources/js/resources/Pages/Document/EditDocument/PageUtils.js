@@ -75,7 +75,7 @@ export class PageUtils extends BasePageUtils {
         this.dispatch(
             setPageTitleAction(
                 `${strings._title} [ ${result.item.documentNo} ${
-                    result.item.owner ? `${result.item.owner} - ` : ""
+                    result.item.owner ? ` - ${result.item.owner}` : ""
                 } ]`
             )
         );

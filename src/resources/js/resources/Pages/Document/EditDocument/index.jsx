@@ -22,6 +22,7 @@ const EditDocument = () => {
                     inputStyle={{ textAlign: "left", direction: "ltr" }}
                     fullRow={false}
                     showLabel
+                    icon={"icon-key4"}
                     prefix={`${pageUtils?.pageState?.props?.year ?? ""}/`}
                     onPrefixClick={(e) => pageUtils.onSelectYearModal(e)}
                 />
@@ -35,13 +36,19 @@ const EditDocument = () => {
                     inputStyle={{ textAlign: "left", direction: "ltr" }}
                     fullRow={false}
                     showLabel
+                    icon={"icon-note-214"}
                 />
                 <InputDatePickerColumn
                     field="paymentDate"
                     showLabel
                     fullRow={false}
                 />
-                <InputTextColumn field="owner" showLabel fullRow={false} />
+                <InputTextColumn
+                    field="owner"
+                    showLabel
+                    icon={"icon-personalcard4"}
+                    fullRow={false}
+                />
             </InputRow>
             <InputTextAreaColumn field="description" showLabel />
             <SelectYearModal />
