@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Document\DocumentSummaryResource;
 use App\Packages\JsonResponse;
 use App\Services\DocumentService;
 use Illuminate\Http\JsonResponse as HttpJsonResponse;
@@ -17,7 +18,7 @@ class DashboardController extends Controller
     public function index(): HttpJsonResponse
     {
         $documentService = new DocumentService();
-        $summary = $documentService->getSummary();
+        $summary = DocumentSummaryResource::collection($documentService->getSummary());
         return $this->onOk(['summary' => $summary]);
     }
 }

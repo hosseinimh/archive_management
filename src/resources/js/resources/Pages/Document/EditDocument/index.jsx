@@ -7,9 +7,10 @@ import {
     InputRow,
     InputDatePickerColumn,
     InputTextDocumentNoColumn,
-    SelectYearModal,
+    SelectDocumentYearModal,
 } from "../../../components";
 import { PageUtils } from "./PageUtils";
+import utils from "../../../../utils/Utils";
 
 const EditDocument = () => {
     const pageUtils = new PageUtils();
@@ -23,8 +24,13 @@ const EditDocument = () => {
                     fullRow={false}
                     showLabel
                     icon={"icon-key4"}
-                    prefix={`${pageUtils?.pageState?.props?.year ?? ""}/`}
-                    onPrefixClick={(e) => pageUtils.onSelectYearModal(e)}
+                    prefix={`${
+                        pageUtils?.pageState?.props?.documentYear ??
+                        utils.getCurrentTimezoneYear()
+                    }/`}
+                    onPrefixClick={(e) =>
+                        pageUtils.onSelectDocumentYearModal(e)
+                    }
                 />
                 <InputDatePickerColumn
                     field="documentDate"
@@ -51,7 +57,7 @@ const EditDocument = () => {
                 />
             </InputRow>
             <InputTextAreaColumn field="description" showLabel />
-            <SelectYearModal />
+            <SelectDocumentYearModal />
         </FormPage>
     );
 };

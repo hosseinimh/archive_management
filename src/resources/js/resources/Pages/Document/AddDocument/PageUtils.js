@@ -21,7 +21,8 @@ export class PageUtils extends BasePageUtils {
         this.entity = new Entity();
         this.callbackUrl = `${BASE_PATH}/documents`;
         this.initialPageProps = { year: null };
-        this.handleSelectYearSubmit = this.handleSelectYearSubmit.bind(this);
+        this.handleSelectDocumentYearSubmit =
+            this.handleSelectDocumentYearSubmit.bind(this);
     }
 
     onLoad() {
@@ -29,27 +30,29 @@ export class PageUtils extends BasePageUtils {
         this.getAddProps(this.layoutState?.documentYear);
     }
 
-    onSelectYearModal(e) {
+    onSelectDocumentYearModal(e) {
         e.stopPropagation();
         this.dispatch(
-            setShownModalAction("selectYearModal", {
-                onSubmit: this.handleSelectYearSubmit,
+            setShownModalAction("selectDocumentYearModal", {
+                onSubmit: this.handleSelectDocumentYearSubmit,
             })
         );
     }
 
-    async getAddProps(year) {
+    async getAddProps(documentYear) {
         try {
             this.dispatch(setLoadingAction(true));
-            const result = await this.entity.getAddProps(year);
+            const result = await this.entity.getAddProps(documentYear);
             if (result) {
-                this.dispatch(setPagePropsAction({ year: year }));
+                this.dispatch(
+                    setPagePropsAction({ documentYear: documentYear })
+                );
                 if (result.item) {
-                    if (!isNaN(result.item.documentNo.substring(5))) {
-                        let lastDocumentNo = parseInt(
-                            result.item.documentNo.substring(5)
+                    if (!isNaN(result.item.documentNo)) {
+                        this.useForm.setValue(
+                            "documentNo",
+                            result.item.documentNo + 1
                         );
-                        this.useForm.setValue("documentNo", lastDocumentNo + 1);
                     } else {
                         this.useForm.setValue("documentNo", 1);
                     }
@@ -65,7 +68,8 @@ export class PageUtils extends BasePageUtils {
 
     async onSubmit(data) {
         const promise = this.entity.store(
-            `${this.pageState.props.year}/${data.documentNo}`,
+            this.pageState.props.documentYear,
+            data.documentNo,
             data.documentDate?.replaceAll("/", ""),
             data.paymentNo,
             data.paymentDate?.replaceAll("/", ""),
@@ -75,9 +79,9 @@ export class PageUtils extends BasePageUtils {
         super.onModifySubmit(promise);
     }
 
-    handleSelectYearSubmit(result, data) {
+    handleSelectDocumentYearSubmit(result, data) {
         if (result === true) {
-            this.getAddProps(data.year);
+            this.getAddProps(data.documentYear);
         }
     }
 }

@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests\Document;
 
+use App\Constants\Year;
 use App\Constants\DocumentNo;
 use App\Constants\ErrorCode;
-use App\Constants\Year;
-use Closure;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
@@ -23,22 +22,8 @@ class ExcelDocumentsRequest extends FormRequest
     public function rules()
     {
         return [
-            'document_no' => [function (string $attribute, mixed $value, Closure $fail) {
-                if ($value === null) {
-                    $fail(__('document.document_no_required'));
-                }
-                $items = explode('/', $value);
-                if (count($items) !== 2) {
-                    $fail(__('document.document_no_valid'));
-                    return;
-                }
-                $year = intval($items[0]);
-                $documentNo = intval($items[1]);
-                if ($year < Year::MIN_YEAR || $year > Year::MAX_YEAR || $documentNo < 0 || $documentNo > DocumentNo::MAX_DOCUMENT_NO) {
-                    $fail(__('document.document_no_valid'));
-                    return;
-                }
-            },],
+            'document_year' => 'required|numeric|gte:' . Year::MIN_YEAR . '|lte:' . Year::MAX_YEAR,
+            'document_no' => 'sometimes|numeric|gte:' . DocumentNo::MIN_DOCUMENT_NO . '|lte:' . DocumentNo::MAX_DOCUMENT_NO,
             'document_date' => 'sometimes|numeric|gte:14000101',
             'payment_no' => 'max:50',
             'payment_date' => 'sometimes|numeric|gte:14000101',
@@ -49,6 +34,13 @@ class ExcelDocumentsRequest extends FormRequest
     public function messages()
     {
         return [
+            'document_year.required' => __('document.document_year_required'),
+            'document_year.numeric' => __('document.document_year_numeric'),
+            'document_year.gte' => __('document.document_year_gte'),
+            'document_year.lte' => __('document.document_year_lte'),
+            'document_no.numeric' => __('document.document_no_numeric'),
+            'document_no.gte' => __('document.document_no_gte'),
+            'document_no.lte' => __('document.document_no_lte'),
             'document_date.numeric' => __('document.document_date_numeric'),
             'document_date.gte' => __('document.document_date_gte'),
             'payment_no.max' => __('document.payment_no_max'),

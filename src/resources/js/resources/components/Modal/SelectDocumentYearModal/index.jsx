@@ -11,7 +11,7 @@ import {
 import { years } from "../../../../constants/lists";
 import { setDocumentYearAction } from "../../../../state/layout/layoutActions";
 
-function SelectYearModal() {
+function SelectDocumentYearModal() {
     const layoutState = useSelector((state) => state.layoutReducer);
     const [modalResult, setModalResult] = useState(undefined);
     const dispatch = useDispatch();
@@ -23,7 +23,9 @@ function SelectYearModal() {
                 typeof layoutState?.shownModal?.props?.onSubmit === "function"
             ) {
                 layoutState?.shownModal?.props?.onSubmit(true, {
-                    year: form.getValues("selectSelectYearModal"),
+                    documentYear: form.getValues(
+                        "selectSelectDocumentYearModal"
+                    ),
                 });
             }
         } else if (modalResult === MODAL_RESULT.CANCEL) {
@@ -37,17 +39,24 @@ function SelectYearModal() {
     }, [modalResult]);
 
     useEffect(() => {
-        if (layoutState?.shownModal?.modal === "selectYearModal") {
-            form.setValue("selectSelectYearModal", layoutState?.documentYear);
+        if (layoutState?.shownModal?.modal === "selectDocumentYearModal") {
+            form.setValue(
+                "selectSelectDocumentYearModal",
+                layoutState?.documentYear
+            );
         }
     }, [layoutState?.shownModal]);
 
     const onSubmit = () => {
         dispatch(
-            setDocumentYearAction(form.getValues("selectSelectYearModal"))
+            setDocumentYearAction(
+                form.getValues("selectSelectDocumentYearModal")
+            )
         );
         dispatch(
-            setDocumentYearAction(form.getValues("selectSelectYearModal"))
+            setDocumentYearAction(
+                form.getValues("selectSelectDocumentYearModal")
+            )
         );
         setModalResult(MODAL_RESULT.OK);
     };
@@ -77,14 +86,14 @@ function SelectYearModal() {
 
     return (
         <Modal
-            id="selectYearModal"
+            id="selectDocumentYearModal"
             title={strings.selectYearModalTitle}
             modalResult={modalResult}
             footer={renderFooter()}
         >
             <InputRow>
                 <InputSelectColumn
-                    field="selectSelectYearModal"
+                    field="selectSelectDocumentYearModal"
                     showLabel
                     useForm={form}
                     strings={strings}
@@ -102,4 +111,4 @@ function SelectYearModal() {
     );
 }
 
-export default SelectYearModal;
+export default SelectDocumentYearModal;

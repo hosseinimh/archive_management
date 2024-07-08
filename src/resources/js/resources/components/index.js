@@ -40,7 +40,7 @@ import ProfileModal from "./Modal/ProfileModal";
 import PromptModal from "./Modal/PromptModal";
 import DocumentFilesModal from "./Modal/DocumentFilesModal";
 import ScanDocumentFile from "./Modal/ScanDocumentFile";
-import SelectYearModal from "./Modal/SelectYearModal";
+import SelectDocumentYearModal from "./Modal/SelectDocumentYearModal";
 
 // Page
 import BlankPage from "./Page/BlankPage";
@@ -94,7 +94,7 @@ export {
     PromptModal,
     DocumentFilesModal,
     ScanDocumentFile,
-    SelectYearModal,
+    SelectDocumentYearModal,
     BlankPage,
     ListPage,
     FormPage,

@@ -6,6 +6,7 @@ import {
 } from "../../../state/layout/layoutActions";
 import { setPagePropsAction } from "../../../state/page/pageActions";
 import { BasePageUtils } from "../../../utils/BasePageUtils";
+import utils from "../../../utils/Utils";
 
 export class PageUtils extends BasePageUtils {
     constructor(useForm) {
@@ -45,6 +46,9 @@ export class PageUtils extends BasePageUtils {
                 systemNotifications: result.systemNotifications,
                 userNotifications: result.userNotifications,
             })
+        );
+        this.dispatch(
+            setPagePropsAction({ documentYear: utils.getCurrentTimezoneYear() })
         );
         return {
             summary: result?.summary ?? [],

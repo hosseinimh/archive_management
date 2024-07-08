@@ -7,6 +7,7 @@ export class Document extends Entity {
     }
 
     async getPaginate(
+        documentYear,
         documentNo,
         documentDate,
         paymentNo,
@@ -16,6 +17,7 @@ export class Document extends Entity {
         _pi = PAGE_ITEMS
     ) {
         return await this.handlePost(`${BASE_URL}/u/documents`, {
+            document_year: documentYear,
             document_no: documentNo,
             document_date: documentDate,
             payment_no: paymentNo,
@@ -37,6 +39,7 @@ export class Document extends Entity {
     }
 
     async store(
+        documentYear,
         documentNo,
         documentDate,
         paymentNo,
@@ -45,6 +48,7 @@ export class Document extends Entity {
         description
     ) {
         return await this.handlePost(`${BASE_URL}/a/documents/store`, {
+            document_year: documentYear,
             document_no: documentNo,
             document_date: documentDate,
             payment_no: paymentNo,
@@ -56,6 +60,7 @@ export class Document extends Entity {
 
     async update(
         id,
+        documentYear,
         documentNo,
         documentDate,
         paymentNo,
@@ -64,6 +69,7 @@ export class Document extends Entity {
         description
     ) {
         return await this.handlePost(`${BASE_URL}/a/documents/update/${id}`, {
+            document_year: documentYear,
             document_no: documentNo,
             document_date: documentDate,
             payment_no: paymentNo,

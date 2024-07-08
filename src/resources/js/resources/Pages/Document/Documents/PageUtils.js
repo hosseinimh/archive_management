@@ -16,13 +16,14 @@ export class PageUtils extends BasePageUtils {
         this.entity = new Entity();
         this.initialPageProps = {
             pageNumber: 1,
-            year: null,
+            documentYear: null,
             item: null,
             items: null,
             action: null,
             searchFields: null,
         };
-        this.handleSelectYearSubmit = this.handleSelectYearSubmit.bind(this);
+        this.handleSelectDocumentYearSubmit =
+            this.handleSelectDocumentYearSubmit.bind(this);
         this.onExcel = this.onExcel.bind(this);
         this.handleDocumentFilesSubmit =
             this.handleDocumentFilesSubmit.bind(this);
@@ -31,25 +32,26 @@ export class PageUtils extends BasePageUtils {
     onLoad() {
         super.onLoad();
         this.dispatch(
-            setPagePropsAction({ year: this.layoutState?.documentYear })
+            setPagePropsAction({ documentYear: this.layoutState?.documentYear })
         );
         this.fillForm(this.getSearchFields());
     }
 
-    onSelectYearModal(e) {
+    onSelectDocumentYearModal(e) {
         e.stopPropagation();
         this.dispatch(
-            setShownModalAction("selectYearModal", {
-                onSubmit: this.handleSelectYearSubmit,
+            setShownModalAction("selectDocumentYearModal", {
+                onSubmit: this.handleSelectDocumentYearSubmit,
             })
         );
     }
 
     onExcel() {
         let searchFields = this.pageState?.props?.searchFields;
-        let url = `${BASE_PATH}/documents/excel?document_no=${encodeURIComponent(
-            searchFields?.documentNo
-        )}`;
+        let url = `${BASE_PATH}/documents/excel?document_year=${searchFields?.documentYear}`;
+        if (searchFields?.documentNo) {
+            url = `${url}&document_no=${searchFields.documentNo}`;
+        }
         if (searchFields?.documentDate) {
             url = `${url}&document_date=${searchFields.documentDate}`;
         }
@@ -88,10 +90,11 @@ export class PageUtils extends BasePageUtils {
 
     getSearchFields = () => {
         let searchFields = {
+            documentYear: this.layoutState?.documentYear,
             documentNo:
                 this.useForm.getValues("documentNo").length > 0
-                    ? this.useForm.getValues("documentNo")
-                    : this.layoutState?.documentYear + "/",
+                    ? this.useForm.getValues("documentNo").substring(5)
+                    : undefined,
             documentDate: this.useForm.getValues("documentDate") ?? "",
             paymentNo: this.useForm.getValues("paymentNo") ?? undefined,
             paymentDate: this.useForm.getValues("paymentDate") ?? "",
@@ -121,6 +124,7 @@ export class PageUtils extends BasePageUtils {
 
     async fillForm(data = null) {
         const promise = this.entity.getPaginate(
+            data.documentYear,
             data.documentNo,
             data.documentDate,
             data.paymentNo,
@@ -158,9 +162,11 @@ export class PageUtils extends BasePageUtils {
         }
     }
 
-    handleSelectYearSubmit(result, data) {
+    handleSelectDocumentYearSubmit(result, data) {
         if (result === true) {
-            this.dispatch(setPagePropsAction({ year: data.year }));
+            this.dispatch(
+                setPagePropsAction({ documentYear: data.documentYear })
+            );
         }
     }
 }

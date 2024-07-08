@@ -21,7 +21,7 @@ class DocumentController extends Controller
 
     public function index(IndexDocumentsRequest $request): HttpJsonResponse
     {
-        return $this->onItems($this->service->getPaginate($request->document_no, $request->document_date, $request->payment_no, $request->payment_date, $request->owner, $request->_pn, $request->_pi));
+        return $this->onItems($this->service->getPaginate($request->document_year, $request->document_no, $request->document_date, $request->payment_no, $request->payment_date, $request->owner, $request->_pn, $request->_pi));
     }
 
     public function show(Model $model): HttpJsonResponse
@@ -32,6 +32,7 @@ class DocumentController extends Controller
     public function excel(ExcelDocumentsRequest $request, Excel $excel)
     {
         $documentExport = new DocumentExport(
+            $request->document_year,
             $request->document_no,
             $request->document_date,
             $request->payment_no,

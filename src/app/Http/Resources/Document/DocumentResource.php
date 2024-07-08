@@ -11,7 +11,8 @@ class DocumentResource extends JsonResource
     {
         return [
             'id' => intval($this->id),
-            'documentNo' => $this->document_no,
+            'documentYear' => intval($this->document_year),
+            'documentNo' => intval($this->document_no),
             'documentDate' => $this->document_date,
             'paymentNo' => $this->payment_no,
             'paymentDate' => $this->payment_date,

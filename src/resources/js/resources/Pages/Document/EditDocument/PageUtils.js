@@ -27,7 +27,8 @@ export class PageUtils extends BasePageUtils {
             item: null,
             year: null,
         };
-        this.handleSelectYearSubmit = this.handleSelectYearSubmit.bind(this);
+        this.handleSelectDocumentYearSubmit =
+            this.handleSelectDocumentYearSubmit.bind(this);
     }
 
     onLoad() {
@@ -56,11 +57,11 @@ export class PageUtils extends BasePageUtils {
         return await this.entity.get(id);
     }
 
-    onSelectYearModal(e) {
+    onSelectDocumentYearModal(e) {
         e.stopPropagation();
         this.dispatch(
-            setShownModalAction("selectYearModal", {
-                onSubmit: this.handleSelectYearSubmit,
+            setShownModalAction("selectDocumentYearModal", {
+                onSubmit: this.handleSelectDocumentYearSubmit,
             })
         );
     }
@@ -69,7 +70,7 @@ export class PageUtils extends BasePageUtils {
         this.dispatch(
             setPagePropsAction({
                 item: result.item,
-                year: result.item.documentNo.substring(0, 4),
+                documentYear: result.item.documentYear,
             })
         );
         this.dispatch(
@@ -81,7 +82,7 @@ export class PageUtils extends BasePageUtils {
         );
         this.useForm.setValue(
             "documentNo",
-            result.item.documentNo ? result.item.documentNo.substring(5) : ""
+            result.item.documentNo ? result.item.documentNo : ""
         );
         if (result.item.documentDate) {
             this.useForm.setValue("documentDate", result.item.documentDate);
@@ -97,7 +98,8 @@ export class PageUtils extends BasePageUtils {
     async onSubmit(data) {
         const promise = this.entity.update(
             this.pageState.params.documentId,
-            `${this.pageState.props.year}/${data.documentNo}`,
+            this.pageState.props.documentYear,
+            data.documentNo,
             data.documentDate?.replaceAll("/", ""),
             data.paymentNo,
             data.paymentDate?.replaceAll("/", ""),
@@ -107,9 +109,11 @@ export class PageUtils extends BasePageUtils {
         super.onModifySubmit(promise);
     }
 
-    handleSelectYearSubmit(result, data) {
+    handleSelectDocumentYearSubmit(result, data) {
         if (result === true) {
-            this.dispatch(setPagePropsAction({ year: data.year }));
+            this.dispatch(
+                setPagePropsAction({ documentYear: data.documentYear })
+            );
         }
     }
 }

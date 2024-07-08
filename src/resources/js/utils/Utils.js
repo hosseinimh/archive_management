@@ -1,6 +1,7 @@
 import CryptoJS from "crypto-js";
 
 import { THEMES } from "../constants";
+import { general } from "../constants/strings/fa";
 
 function isValidMobile(value) {
     const prefix = [
@@ -612,6 +613,13 @@ const getTimezoneDate = (date, locale) => {
     return { date: utils.toLocaleDateString(d, locale), time };
 };
 
+const getCurrentTimezoneYear = () => {
+    const d = new Date(
+        new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000
+    );
+    return utils.toNumericLocaleDateString(d, general.locale).substring(0, 4);
+};
+
 const getExtension = (filename) => {
     return /[.]/.exec(filename) ? /[^.]+$/.exec(filename) : undefined;
 };
@@ -649,6 +657,7 @@ const utils = {
     toLocaleDateString,
     toNumericLocaleDateString,
     getTimezoneDate,
+    getCurrentTimezoneYear,
     getExtension,
     hasValue,
 };

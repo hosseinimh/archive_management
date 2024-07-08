@@ -23,19 +23,19 @@ class DocumentController extends Controller
 
     public function getAddProps(Request $request): HttpJsonResponse
     {
-        $year = in_array($request->year, Year::toArray()) ? $request->year : Helper::getFaCurrentDate()[0];
-        $item = $this->service->getLastInYear($year);
+        $documentYear = in_array($request->document_year, Year::toArray()) ? $request->document_year : Helper::getFaCurrentDate()[0];
+        $item = $this->service->getLastInDocumentYear($documentYear);
         $item = $item ? new DocumentResource($item) : null;
-        return $this->onOk(['year' => $year, 'item' => $item]);
+        return $this->onOk(['documentYear' => $documentYear, 'item' => $item]);
     }
 
     public function store(StoreDocumentRequest $request): HttpJsonResponse
     {
-        return $this->onStore($this->service->store($request->document_no, $request->document_date, $request->payment_no, $request->payment_date, $request->owner, $request->description, auth()->user()->id));
+        return $this->onStore($this->service->store($request->document_year, $request->document_no, $request->document_date, $request->payment_no, $request->payment_date, $request->owner, $request->description, auth()->user()->id));
     }
 
     public function update(Model $model, UpdateDocumentRequest $request): HttpJsonResponse
     {
-        return $this->onUpdate($this->service->update($model, $request->document_no, $request->document_date, $request->payment_no, $request->payment_date, $request->owner, $request->description, auth()->user()->id));
+        return $this->onUpdate($this->service->update($model, $request->document_year, $request->document_no, $request->document_date, $request->payment_no, $request->payment_date, $request->owner, $request->description, auth()->user()->id));
     }
 }

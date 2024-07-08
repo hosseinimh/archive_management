@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('tbl_documents', function (Blueprint $table) {
             $table->id();
-            $table->string('document_no')->unique();
+            $table->unsignedInteger('document_year');
+            $table->unsignedInteger('document_no');
             $table->string('document_date')->nullable();
             $table->string('payment_no')->nullable();
             $table->string('payment_date')->nullable();

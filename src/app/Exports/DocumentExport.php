@@ -5,28 +5,28 @@ namespace App\Exports;
 use App\Services\DocumentService;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithDefaultStyles;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Events\AfterSheet;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Style;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class DocumentExport implements FromQuery, WithMapping, WithHeadings, ShouldAutoSize, WithDefaultStyles, WithStyles, WithEvents
+class DocumentExport implements FromQuery, WithMapping, WithHeadings, ShouldAutoSize, WithDefaultStyles, WithStyles, WithEvents, WithColumnWidths
 {
-    private int $index;
-
     public function __construct(
+        private ?string $documentYear,
         private ?string $documentNo,
         private ?string $documentDate,
         private ?string $paymentNo,
         private ?string $paymentDate,
         private ?string $owner,
     ) {
-        $this->index = 1;
     }
 
     public function registerEvents(): array
@@ -34,6 +34,7 @@ class DocumentExport implements FromQuery, WithMapping, WithHeadings, ShouldAuto
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $event->sheet->getDelegate()->setRightToLeft(true);
+                $event->sheet->getDelegate()->freezePane('A2');
             },
         ];
     }
@@ -43,6 +44,7 @@ class DocumentExport implements FromQuery, WithMapping, WithHeadings, ShouldAuto
         return [
             'alignment' => [
                 'vertical' => Alignment::VERTICAL_TOP,
+                'horizontal' => Alignment::HORIZONTAL_RIGHT,
             ],
         ];
     }
@@ -50,24 +52,34 @@ class DocumentExport implements FromQuery, WithMapping, WithHeadings, ShouldAuto
     public function styles(Worksheet $sheet)
     {
         return [
-            'A:F'  => [
-                'alignment' => [
-                    'wrapText' => true,
-                    'horizontal' => Alignment::HORIZONTAL_RIGHT,
-                ]
-            ],
+            1    => ['fill' => [
+                'fillType'   => Fill::FILL_SOLID,
+                'startColor' => ['argb' => '7C95C6'],
+            ]],
+        ];
+    }
+
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 11,
+            'B' => 11,
+            'C' => 15,
+            'D' => 15,
+            'E' => 35,
+            'F' => 135,
         ];
     }
 
     public function headings(): array
     {
         return [
-            __('document.excel_row_no'),
             __('document.excel_document_no'),
             __('document.excel_document_date'),
             __('document.excel_payment_no'),
             __('document.excel_payment_date'),
             __('document.excel_owner'),
+            __('document.excel_description'),
         ];
     }
 
@@ -75,6 +87,7 @@ class DocumentExport implements FromQuery, WithMapping, WithHeadings, ShouldAuto
     {
         $documentService = new DocumentService();
         return $documentService->getAllQuery(
+            $this->documentYear,
             $this->documentNo,
             $this->documentDate,
             $this->paymentNo,
@@ -92,17 +105,13 @@ class DocumentExport implements FromQuery, WithMapping, WithHeadings, ShouldAuto
 
     public function map($item): array
     {
-        $documentDate = $item->document_date;
-        $documentDate = strlen($documentDate) === 8 ? substr($documentDate, 0, 4) . "/" . substr($documentDate, 4, 2) . "/" . substr($documentDate, 6) : '-';
-        $paymentDate = $item->payment_date;
-        $paymentDate = strlen($paymentDate) === 8 ? substr($paymentDate, 0, 4) . "/" . substr($paymentDate, 4, 2) . "/" . substr($paymentDate, 6) : '-';
         return [
-            $this->index++,
-            $item->document_no,
-            $documentDate,
+            $item->document_year . '/' . $item->document_no,
+            $item->document_date ?? '-',
             $item->payment_no ?? '-',
-            $paymentDate,
-            $item->owner ?? '-'
+            $item->payment_date ?? '-',
+            $item->owner ?? '-',
+            $item->description
         ];
     }
 }

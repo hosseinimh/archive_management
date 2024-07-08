@@ -90,7 +90,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (pageState?.props?.summary?.length > 0) {
-            setYears(pageState.props.summary.map((item) => item.year));
+            setYears(pageState.props.summary.map((item) => item.documentYear));
             cetCounts(pageState.props.summary.map((item) => item.count));
         }
     }, [pageState?.props?.summary]);

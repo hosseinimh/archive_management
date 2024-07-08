@@ -280,10 +280,9 @@ function DocumentFilesModal() {
         const children = items?.map((item) => (
             <React.Fragment key={item.id}>
                 <tr>
-                    <td>
+                    <td style={{ direction: "ltr", textAlign: "right" }}>
                         <CustomLink
                             onClick={() => onDownload(item)}
-                            containerStyle={{ direction: "ltr" }}
                             title={item.name}
                         >
                             {item.name.length > 30
@@ -353,10 +352,10 @@ function DocumentFilesModal() {
         <Modal
             id="documentFilesModal"
             title={`${strings._title} - [ ${
-                layoutState?.shownModal?.props?.document?.documentNo
-            } - ${
+                layoutState?.shownModal?.props?.document?.documentYear
+            }/${layoutState?.shownModal?.props?.document?.documentNo}${
                 layoutState?.shownModal?.props?.document?.owner
-                    ? layoutState?.shownModal?.props?.document?.owner
+                    ? ` - ${layoutState?.shownModal?.props?.document?.owner}`
                     : ""
             } ]`}
             onClose={onClose}

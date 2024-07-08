@@ -12,6 +12,7 @@ class Document extends Model
 
     protected $table = 'tbl_documents';
     protected $fillable = [
+        'document_year',
         'document_no',
         'document_date',
         'payment_no',
