@@ -49,7 +49,7 @@ export class PageUtils extends BasePageUtils {
     onExcel() {
         let searchFields = this.pageState?.props?.searchFields;
         let url = `${BASE_PATH}/documents/excel?document_year=${searchFields?.documentYear}`;
-        if (searchFields?.documentNo) {
+        if (searchFields?.documentNo !== "") {
             url = `${url}&document_no=${searchFields.documentNo}`;
         }
         if (searchFields?.documentDate) {
@@ -92,8 +92,8 @@ export class PageUtils extends BasePageUtils {
         let searchFields = {
             documentYear: this.layoutState?.documentYear,
             documentNo:
-                this.useForm.getValues("documentNo").length > 0
-                    ? this.useForm.getValues("documentNo").substring(5)
+                this.useForm.getValues("documentNo") !== ""
+                    ? this.useForm.getValues("documentNo")
                     : undefined,
             documentDate: this.useForm.getValues("documentDate") ?? "",
             paymentNo: this.useForm.getValues("paymentNo") ?? undefined,

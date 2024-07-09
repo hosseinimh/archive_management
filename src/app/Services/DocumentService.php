@@ -84,7 +84,7 @@ class DocumentService
         $query = Model::join('tbl_users', 'tbl_documents.user_id', 'tbl_users.id')
             ->where('document_year', $documentYear);
         if ($documentNo !== null) {
-            $query->where('document_no', $documentNo);
+            $query->where('document_no', 'LIKE', '%' . $documentNo . '%');
         }
         if ($documentDate !== null) {
             $query->where('document_date', 'LIKE', '%' . $documentDate . '%');
