@@ -1,10 +1,10 @@
 {
-    "relativePublicPath": "./../public",
-    "baseUrl": "http://127.0.0.1:8000",
-    "environment": "local",
+    "*relativePublicPath": "./../public",
+    "*baseUrl": "http://127.0.0.1:8000",
+    "*environment": "local",
     "dwtKey": "t0197AgYAACy/oh1UGNic95ao4wrWGzxOJ2oblDp5oN/0Tmjd1EZvjf2/DebOJB4cg8m9M6HsGrAlaZOpF0yoEKZkCz9nKwBgjrp6V68rrZbRsoiWUkSLMlq9q5W0NMZn/v71tHXcoxn4TgDXC7ICsMCczg7omiU9eIB6AB2AXg7wgNNTpPrXtoAq+5axq0795dKpBZx83mk75RknCjj1ljM1SJua4pdOO8wA7M3ZAOoBPAWw/NQODSJ7QD2AByDGRlsh/4rYNII=",
 
-    "*relativePublicPath": "./../public",
-    "*baseUrl": "http://192.168.0.27",
-    "*environment": "production"
+    "relativePublicPath": "./../public",
+    "baseUrl": "http://192.168.0.27",
+    "environment": "production"
 }
